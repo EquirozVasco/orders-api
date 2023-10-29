@@ -4,7 +4,20 @@ const Order = require('../models/order.model');
 
 //get all orders
 exports.getOrders = (req, res, next) => {
-    Order.findAll()
+    whereClause = {};
+    if(req.query.status){
+        whereClause.status = req.query.status
+    }
+    if(req.query.code){
+        whereClause.code = req.query.code
+    }
+    if(req.query.name){
+        whereClause.name = req.query.name
+    }
+
+    Order.findAll({
+        where: whereClause
+    })
         .then(orders => {
             res.status(200).json(orders);
         })
